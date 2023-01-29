@@ -8,7 +8,7 @@ const ItemSchema = new mongoose.Schema({
     type: Number,
   },
   description: {
-    type: Number,
+    type: String,
   },
   createdBy: {
     type: String,

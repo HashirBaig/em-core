@@ -29,8 +29,7 @@ router.get("/", [auth], async (req, res) => {
 // @route   POST api/items
 // @desc    Add item
 // @access  Private
-// router.post("/", [auth,[check("item", "item is required")]], async (req, res) => {
-router.post("/", [auth, [check("item", "item is required").notEmpty()]], async (req, res) => {
+router.post("/add-item", [auth, [check("item", "item is required").notEmpty()]], async (req, res) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() })
@@ -38,19 +37,16 @@ router.post("/", [auth, [check("item", "item is required").notEmpty()]], async (
   const { item, description, amount } = req.body
   try {
     const userEmail = req?.user?.email
-    console.log("item: ", item)
-    console.log("description: ", description)
-    console.log("amount: ", amount)
-    console.log("userEmail: ", userEmail)
-    // const item = new Item({
-    //     item,
-    //     amount,
-    //     description,
-    //     createdBy: req?.user?.email
-    // })
-    // await item.save()
 
-    return res.status(200).json({ status: "OK" })
+    const registration = new Item({
+      item,
+      amount: Number(amount),
+      description,
+      createdBy: userEmail,
+    })
+    await registration.save()
+
+    return res.status(200).json({ message: "Item added successfully" })
   } catch (error) {
     console.error(error)
     return res.status(500).send(SERVER_ERROR)
