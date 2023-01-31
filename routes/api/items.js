@@ -9,7 +9,7 @@ const router = express.Router()
 // @route   GET api/items
 // @desc    Get all items
 // @access  Private
-router.get("/", [auth], async (req, res) => {
+router.get("/", auth, async (req, res) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() })
@@ -17,7 +17,7 @@ router.get("/", [auth], async (req, res) => {
 
   try {
     const userEmail = req?.user?.email
-    const items = Item.find({ createdBy: userEmail })
+    const items = await Item.find({ createdBy: userEmail })
 
     return res.status(200).json({ items })
   } catch (error) {
