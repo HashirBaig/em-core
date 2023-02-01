@@ -7,7 +7,7 @@ const Item = require("../../models/Item")
 const router = express.Router()
 
 // @route   GET api/items
-// @desc    Get all items
+// @desc    Get all items with applied filters
 // @access  Private
 router.get("/", auth, async (req, res) => {
   const errors = validationResult(req)
