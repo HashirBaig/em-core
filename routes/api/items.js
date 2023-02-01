@@ -34,7 +34,7 @@ router.post("/add-item", [auth, [check("item", "item is required").notEmpty()]],
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() })
   }
-  const { item, description, amount } = req.body
+  const { item, description, amount = 0 } = req.body
   try {
     const userEmail = req?.user?.email
 
